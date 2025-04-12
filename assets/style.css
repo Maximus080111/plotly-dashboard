@@ -1,0 +1,203 @@
+/* Algemene stijlen */
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: "Montserrat", sans-serif;
+    background-color: #121212; /* Donkere achtergrond voor dark mode */
+    color: #E0E0E0; /* Lichte tekstkleur */
+    overflow-x: hidden;
+}
+
+.realtime-card {
+    height: 50%;
+    background: #1E1E1E;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
+}
+
+/* Pagina-container
+.page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+} */
+
+/* Header */
+
+h1 {
+    margin: 0;
+    padding: 20px;
+    color: white;
+}
+
+.page {
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+}
+
+.main {
+    padding: 20px;
+    flex-grow: 1;
+    height: 100%;
+}
+
+/* Dropdown */
+.dcc-dropdown {
+    margin: 0 auto 20px auto;
+    width: 50%;
+}
+
+.dcc-dropdown .dropdown {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 1rem;
+}
+
+/* Grafiek */
+.dcc-graph {
+    background-color: #1E1E1E; /* Donkere achtergrond voor de grafiek */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    margin-bottom: 20px;
+    height: 50%;
+}
+
+/* Layout voor spikes en tabel */
+.dashboard-content {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 35%;
+    gap: 20px;
+}
+
+.spikes-card {
+    /* flex: 1; */
+    width: 50%;
+    position: relative; /* Ensure the gradient and content are positioned relative to the card */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    overflow-y: hidden;
+    color: #E0E0E0; /* Light text color for readability */
+    background-color: #1E1E1E; /* Fallback background color */
+    border: 3px solid #1E1E1E;
+}
+
+.spikes-gradient {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30%; /* Full height of the card */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0)); /* Black gradient going up */
+    border-radius: 10px; /* Match the card's border radius */
+    z-index: 2; /* Place it behind the content */
+}
+
+#spikes-text {
+    position: relative;
+    z-index: 1; /* Ensure the text is above the gradient */
+    text-align: left;
+    font-size: 1.2rem;
+    /* line-height: 1.5; */
+}
+
+
+/* Tabel */
+.dash-table-container {
+    background-color: #1E1E1E; /* Donkere achtergrond */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    width: 50%;
+
+}
+
+.dash-table-container .dash-table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #1E1E1E; /* Donkere achtergrond voor de tabel */
+    color: #E0E0E0; /* Lichte tekstkleur */
+}
+
+.dash-table-container .dash-table th {
+    background-color: #BB86FC; /* Accentkleur voor de koptekst */
+    color: #121212; /* Donkere tekstkleur */
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+}
+
+.dash-table-container .dash-table td {
+    text-align: center;
+    padding: 10px;
+    border-bottom: 1px solid #333;
+    color: #E0E0E0; /* Lichte tekstkleur */
+}
+
+
+.sidebar-title {
+    color: #BB86FC; /* Accentkleur */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.dropdown {
+    margin: 20px;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #2C2C2C;
+    color: #E0E0E0;
+    border: none;
+    width: calc(100% - 40px);
+}
+
+/* Sluitknop */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: #E0E0E0;
+    cursor: pointer;
+}
+
+/* Open-knop */
+.open-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: #BB86FC;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+/* Main content */
+.main-content {
+    margin-left: 0;
+    transition: margin-left 0.3s;
+}
+
+/* Responsiviteit */
+@media (max-width: 768px) {
+    .dashboard-content {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .dcc-graph, #spikes-text, .dash-table-container {
+        width: 100%;
+    }
+}
