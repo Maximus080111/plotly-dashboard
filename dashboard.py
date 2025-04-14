@@ -43,6 +43,9 @@ app.layout = html.Div([
         html.Div([
             html.Div(children=[
                 html.H1("Live data"),
+                dcc.Graph(id='latest-temperature-gauge', style={'height': '300px'}),  # Gauge chart for temperature
+                html.Div(id='latest-humidity', style={'fontSize': '24px', 'marginTop': '10px'}),
+                html.Div(id='latest-timestamp', style={'fontSize': '20px', 'marginTop': '10px'}),
             ], className="realtime-card"),
             html.Div( className="dcc-graph", children=[
                 html.H1("Temperatuur en Luchtvochtigheid"),
@@ -87,9 +90,9 @@ app.layout = html.Div([
                                     {'name': 'Waarde', 'id': 'value'},
                                     {'name': 'Tijdstip', 'id': 'timestamp'}
                                 ],
-                                style_table={'width': '100%'},
-                                style_cell={'textAlign': 'center'},
-                                style_header={'fontWeight': 'bold'}
+                                style_table={'width': '100%', 'color': '#000000'},
+                                style_cell={'textAlign': 'center', 'color': '#000000'},
+                                style_header={'fontWeight': 'bold', 'color': '#000000'}
                             )
                         ]
                     )
@@ -106,10 +109,12 @@ app.layout = html.Div([
 
 # Callback to update the graph
 @app.callback(
-    Output('line-chart', 'figure'),
+     Output('line-chart', 'figure'),
     [Input('time-interval', 'value'),
      Input('interval-component', 'n_intervals')]
 )
+
+
 def update_graph(interval, n_intervals):
     df = get_data(interval)
     if df.empty:
@@ -157,6 +162,51 @@ def update_graph(interval, n_intervals):
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
     )
     return fig
+
+# Callback to update the latest temperature, humidity, and timestamp
+@app.callback(
+    [Output('latest-temperature-gauge', 'figure'),
+     Output('latest-humidity', 'children'),
+     Output('latest-timestamp', 'children')],
+    Input('interval-component', 'n_intervals')
+)
+def update_latest_data(n_intervals):
+    df = get_data('1 day')  # Fetch data for the last day
+    if df.empty:
+        # Return empty gauge and placeholder texts if no data is available
+        gauge_fig = go.Figure(go.Indicator(
+            mode="gauge+number",
+            value=0,
+            title={'text': "Temperatuur (°C)"},
+            gauge={'axis': {'range': [0, 50]}}
+        ))
+        return gauge_fig, "Geen data beschikbaar", "Geen data beschikbaar"
+
+    last_row = df.iloc[-1]
+
+    # Create the gauge chart for temperature
+    gauge_fig = go.Figure(go.Indicator(
+        mode="gauge+number",
+        value=last_row['temperatuur'],
+        title={'text': "Temperatuur (°C)"},
+        gauge={
+            'axis': {'range': [0, 50]},  # Adjust range based on your data
+            'bar': {'color': "orange"},
+            'steps': [
+                {'range': [0, 10], 'color': "lightblue"},
+                {'range': [10, 25], 'color': "lightgreen"},
+                {'range': [25, 50], 'color': "red"}
+            ]
+        }
+    ))
+
+    # Text for humidity
+    latest_humidity = f"Laatste luchtvochtigheid: {last_row['luchtvochtigheid']:.2f}%"
+
+    # Text for timestamp
+    latest_timestamp = f"Laatste tijdstip: {last_row['timestamp']}"
+
+    return gauge_fig, latest_humidity, latest_timestamp
 
 # Callback to display and store spikes
 @app.callback(
