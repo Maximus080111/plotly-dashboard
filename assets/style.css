@@ -16,6 +16,21 @@ html, body {
     margin-bottom: 20px;
 }
 
+.realtime-components {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.realtime-components > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
 /* Pagina-container
 .page {
     display: flex;
@@ -26,6 +41,13 @@ html, body {
     padding: 20px;
     box-sizing: border-box;
 } */
+
+.flex-table {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
 /* Header */
 

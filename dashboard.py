@@ -43,9 +43,13 @@ app.layout = html.Div([
         html.Div([
             html.Div(children=[
                 html.H1("Live data"),
-                dcc.Graph(id='latest-temperature-gauge', style={'height': '300px'}),  # Gauge chart for temperature
-                html.Div(id='latest-humidity', style={'fontSize': '24px', 'marginTop': '10px'}),
-                html.Div(id='latest-timestamp', style={'fontSize': '20px', 'marginTop': '10px'}),
+                html.Div(children=[
+                    dcc.Graph(id='latest-temperature-gauge', style={'height': '300px'}),  # Gauge chart for temperature
+                    html.Div(children=[
+                        html.Div(id='latest-humidity', style={'fontSize': '24px', 'marginTop': '10px'}),
+                        html.Div(id='latest-timestamp', style={'fontSize': '20px', 'marginTop': '10px'}),
+                    ])
+                ], className="realtime-components"),
             ], className="realtime-card"),
             html.Div( className="dcc-graph", children=[
                 html.H1("Temperatuur en Luchtvochtigheid"),
@@ -83,16 +87,18 @@ app.layout = html.Div([
                         className="dash-table-container",
                         children=[
                             html.H1("Extremen"),
-                            dash_table.DataTable(
-                                id='extremes-table',
-                                columns=[
-                                    {'name': 'Type', 'id': 'type'},
-                                    {'name': 'Waarde', 'id': 'value'},
-                                    {'name': 'Tijdstip', 'id': 'timestamp'}
-                                ],
-                                style_table={'width': '100%', 'color': '#000000'},
-                                style_cell={'textAlign': 'center', 'color': '#000000'},
-                                style_header={'fontWeight': 'bold', 'color': '#000000'}
+                            html.Div(
+                                dash_table.DataTable(
+                                    id='extremes-table',
+                                    columns=[
+                                        {'name': 'Type', 'id': 'type'},
+                                        {'name': 'Waarde', 'id': 'value'},
+                                        {'name': 'Tijdstip', 'id': 'timestamp'}
+                                    ],
+                                    style_table={'width': '100%', 'color': '#000000'},
+                                    style_cell={'textAlign': 'center', 'color': '#000000'},
+                                    style_header={'fontWeight': 'bold', 'color': '#000000'}
+                                ), className="flex-table"
                             )
                         ]
                     )
@@ -199,6 +205,13 @@ def update_latest_data(n_intervals):
             ]
         }
     ))
+
+    gauge_fig.update_layout(
+        plot_bgcolor="rgba(0,0,0,0)",
+        paper_bgcolor="rgba(0,0,0,0)",
+        font=dict(color="white"),
+        height=300
+    )
 
     # Text for humidity
     latest_humidity = f"Laatste luchtvochtigheid: {last_row['luchtvochtigheid']:.2f}%"
